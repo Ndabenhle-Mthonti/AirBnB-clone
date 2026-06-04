@@ -1,92 +1,34 @@
+/**
+ * routes/airbnbs.js
+ * -----------------
+ * Defines URL paths and connects them to controller functions.
+ * This file should stay small and easy to read.
+ *
+ * Base path (set in server.js): /api/airbnbs
+ *
+ * Endpoints:
+ *  GET    /api/airbnbs       -> getAccommodations
+ *  GET    /api/airbnbs/:id   -> getAccommodation
+ *  POST   /api/airbnbs       -> createAccommodation
+ *  PATCH  /api/airbnbs/:id   -> updateAccommodation
+ *  DELETE /api/airbnbs/:id   -> deleteAccommodation
+ */
+
 const express = require('express')
-const mongoose = require('mongoose')
-const Accommodation = require('../models/accommodation')
+const {
+  getAccommodations,
+  getAccommodation,
+  createAccommodation,
+  deleteAccommodation,
+  updateAccommodation,
+} = require('../controllers/airbnbControllers')
 
 const router = express.Router()
 
-// get all accommodations
-router.get('/', async (req, res) => {
-  try {
-    const accommodations = await Accommodation.find({}).sort({ createdAt: -1 })
-    res.status(200).json(accommodations)
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
-})
-
-// get a single accommodation
-router.get('/:id', async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such accommodation' })
-  }
-
-  try {
-    const accommodation = await Accommodation.findById(id)
-    if (!accommodation) {
-      return res.status(404).json({ error: 'No such accommodation' })
-    }
-
-    res.status(200).json(accommodation)
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
-})
-
-// create a new accommodation
-router.post('/', async (req, res) => {
-  try {
-    const accommodation = await Accommodation.create(req.body)
-    res.status(201).json(accommodation)
-  } catch (error) {
-    res.status(400).json({ error: error.message })
-  }
-})
-
-// delete accommodation
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such accommodation' })
-  }
-
-  try {
-    const accommodation = await Accommodation.findOneAndDelete({ _id: id })
-    if (!accommodation) {
-      return res.status(404).json({ error: 'No such accommodation' })
-    }
-
-    res.status(200).json(accommodation)
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-  }
-})
-
-// update accommodation
-router.patch('/:id', async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: 'No such accommodation' })
-  }
-
-  try {
-    const accommodation = await Accommodation.findOneAndUpdate(
-      { _id: id },
-      { ...req.body },
-      { new: true, runValidators: true },
-    )
-
-    if (!accommodation) {
-      return res.status(404).json({ error: 'No such accommodation' })
-    }
-
-    res.status(200).json(accommodation)
-  } catch (error) {
-    res.status(400).json({ error: error.message })
-  }
-})
+router.get('/', getAccommodations)
+router.get('/:id', getAccommodation)
+router.post('/', createAccommodation)
+router.delete('/:id', deleteAccommodation)
+router.patch('/:id', updateAccommodation)
 
 module.exports = router
