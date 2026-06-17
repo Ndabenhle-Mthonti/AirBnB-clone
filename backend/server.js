@@ -35,9 +35,25 @@ dns.setServers(['8.8.8.8', '1.1.1.1'])
  * Middleware
  * ----------
  * express.json() lets Express read JSON request bodies from Postman.
+ * CORS allows the React app (port 3000) to call this API (port 4000).
  * The logger prints every request path + method in the terminal (useful while learning).
  */
 app.use(express.json())
+
+// Allow frontend (React) to fetch data from this backend
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+
+  // Browsers send OPTIONS before POST/PATCH/DELETE — answer it quickly
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200)
+  }
+
+  next()
+})
+
 app.use((req, res, next) => {
   console.log(req.path, req.method)
   next()
