@@ -1,0 +1,40 @@
+.nav-tabs {
+  align-items: center;
+  display: flex;
+  gap: 28px;
+  justify-content: center;
+}
+
+.nav-tab {
+  background: transparent;
+  border: none;
+  color: #484848;
+  cursor: pointer;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 0;
+}
+
+.nav-tab:hover {
+  color: #000000;
+}
+
+.nav-tab--active {
+  font-weight: 700;
+  color: #222222;
+}
+
+.nav-tab-label {
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .nav-tabs {
+    gap: 18px;
+  }
+
+  .nav-tab {
+    font-size: 13px;
+  }
+}

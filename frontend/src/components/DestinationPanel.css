@@ -1,0 +1,63 @@
+.destination-panel {
+  width: 560px;
+}
+
+.destination-input {
+  border: 1px solid #dddddd;
+  border-radius: 999px;
+  box-sizing: border-box;
+  font-family: Circular, system-ui, sans-serif;
+  font-size: 15px;
+  margin-bottom: 18px;
+  outline: none;
+  padding: 14px 18px;
+  width: 100%;
+}
+
+.destination-input:focus {
+  border-color: #222222;
+}
+
+.destination-city-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.destination-city-card {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: Circular, system-ui, sans-serif;
+  padding: 0;
+  text-align: left;
+}
+
+.destination-city-card img {
+  border-radius: 14px;
+  height: 82px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.destination-city-card span {
+  color: #222222;
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.destination-city-card:hover img {
+  filter: brightness(0.94);
+}
+
+@media (max-width: 768px) {
+  .destination-panel {
+    width: calc(100vw - 40px);
+  }
+
+  .destination-city-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

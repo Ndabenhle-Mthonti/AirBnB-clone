@@ -1,0 +1,135 @@
+.airbnb-navbar {
+  background: #ffffff;
+  border-bottom: 1px solid #ebebeb;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+  color: #484848;
+  font-family: Circular, -apple-system, BlinkMacSystemFont, sans-serif;
+  padding: 18px 32px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.airbnb-navbar-top {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+}
+
+.airbnb-navbar-left,
+.airbnb-navbar-right {
+  align-items: center;
+  display: flex;
+}
+
+.airbnb-navbar-right {
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.airbnb-brand {
+  align-items: center;
+  color: #ff5a5f;
+  display: inline-flex;
+  font-size: 24px;
+  font-weight: 700;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.airbnb-brand-icon {
+  fill: currentColor;
+  height: 30px;
+  width: 30px;
+}
+
+.airbnb-brand-text {
+  letter-spacing: -1px;
+}
+
+.airbnb-host-link {
+  border-radius: 22px;
+  color: #484848;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.airbnb-host-link:hover,
+.airbnb-icon-button:hover,
+.airbnb-profile-menu:hover {
+  background: #f7f7f7;
+}
+
+.airbnb-icon-button {
+  align-items: center;
+  background: #ffffff;
+  border: none;
+  border-radius: 50%;
+  color: #484848;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 18px;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.airbnb-profile-menu {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 999px;
+  color: #484848;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 10px;
+  min-height: 38px;
+  padding: 5px 6px 5px 12px;
+}
+
+.airbnb-user-avatar {
+  align-items: center;
+  background: #717171;
+  border-radius: 50%;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 15px;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.airbnb-search-area {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+@media (max-width: 900px) {
+  .airbnb-navbar {
+    padding: 16px 20px 20px;
+  }
+
+  .airbnb-navbar-top {
+    gap: 16px;
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .airbnb-brand-text,
+  .airbnb-host-link {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .airbnb-navbar-top {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .airbnb-navbar-center {
+    display: none;
+  }
+}

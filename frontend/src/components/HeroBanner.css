@@ -1,0 +1,89 @@
+.hero-banner {
+  height: 480px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.hero-banner-image {
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+
+.hero-banner-overlay {
+  background: rgba(0, 0, 0, 0.2);
+  inset: 0;
+  position: absolute;
+}
+
+.hero-heart-button {
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  height: 42px;
+  left: 24px;
+  position: absolute;
+  top: 24px;
+  width: 42px;
+  z-index: 2;
+}
+
+.hero-heart-button:hover {
+  transform: scale(1.06);
+}
+
+.hero-banner-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 80%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+.hero-banner-content h1 {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 18px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.hero-flexible-button {
+  background: #ffffff;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  color: #222222;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hero-flexible-button:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+  transform: scale(1.04);
+}
+
+@media (max-width: 768px) {
+  .hero-banner {
+    height: 60vh;
+  }
+
+  .hero-banner-content {
+    width: calc(100% - 40px);
+  }
+
+  .hero-banner-content h1 {
+    font-size: 20px;
+  }
+}

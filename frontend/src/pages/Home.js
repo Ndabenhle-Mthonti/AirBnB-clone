@@ -12,7 +12,16 @@ import { useAccommodationContext } from '../hooks/useAccommodationContext'
 import { API_URL } from '../config/api'
 
 const Home = () => {
-  const { accommodations, error } = useAccommodationContext()
+  const { accommodations, searchParams, error } = useAccommodationContext()
+
+  const visibleAccommodations =
+    accommodations && searchParams?.destination
+      ? accommodations.filter(
+          (accommodation) =>
+            accommodation.location?.city?.toLowerCase() ===
+            searchParams.destination.toLowerCase(),
+        )
+      : accommodations
 
   return (
     <div className="home">
@@ -25,17 +34,18 @@ const Home = () => {
       {error && <p className="error">{error}</p>}
 
       {/* API worked but database has no listings yet */}
-      {accommodations && accommodations.length === 0 && (
+      {visibleAccommodations && visibleAccommodations.length === 0 && (
         <p>
-          No accommodations yet. Go to <strong>Add listing</strong> or use Postman
-          POST {API_URL}
+          {searchParams?.destination
+            ? `No accommodations found in ${searchParams.destination}.`
+            : `No accommodations yet. Go to Add listing or use Postman POST ${API_URL}`}
         </p>
       )}
 
       {/* Render one card per accommodation from MongoDB */}
       <div className="airbnbs">
-        {accommodations &&
-          accommodations.map((accommodation) => (
+        {visibleAccommodations &&
+          visibleAccommodations.map((accommodation) => (
             <AccommodationDetails
               key={accommodation._id}
               accommodation={accommodation}

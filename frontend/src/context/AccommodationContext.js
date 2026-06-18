@@ -23,6 +23,7 @@ export const AccommodationContext = createContext(null)
 // Starting state before data is loaded from the backend
 const initialState = {
   accommodations: null, // null = still loading, [] = empty, array = has data
+  searchParams: null,
   error: null,
 }
 
@@ -52,6 +53,13 @@ function accommodationReducer(state, action) {
       return {
         ...state,
         error: action.payload,
+      }
+
+    // Store values selected from the navbar search bar
+    case 'SET_SEARCH_PARAMS':
+      return {
+        ...state,
+        searchParams: action.payload,
       }
 
     default:

@@ -3,8 +3,6 @@
  * -----------------------
  * A small reusable card that displays ONE accommodation.
  * Home.js passes each item as the "accommodation" prop.
- *
- * React rule: component names must start with a capital letter (AccommodationDetails, not accommodationDetails).
  */
 
 const AccommodationDetails = ({ accommodation }) => {

@@ -15,6 +15,7 @@ import { AccommodationContextProvider } from './context/AccommodationContext'
 import Home from './pages/Home'
 import Navbar from './components/Navbar'
 import AccommodationForm from './components/AccommodationForm'
+import HeroBanner from './components/HeroBanner'
 
 function App() {
   return (
@@ -26,7 +27,15 @@ function App() {
           <div className="pages">
             <Routes>
               {/* GET /api/airbnbs — list all accommodations */}
-              <Route path="/" element={<Home />} />
+              <Route
+                path="/"
+                element={
+                  <>
+                    <HeroBanner />
+                    <Home />
+                  </>
+                }
+              />
 
               {/* POST /api/airbnbs — create a new accommodation */}
               <Route path="/add" element={<AccommodationForm />} />
