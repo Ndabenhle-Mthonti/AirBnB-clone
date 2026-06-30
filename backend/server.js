@@ -16,6 +16,7 @@ const express = require('express')
 const dns = require('dns')
 const mongoose = require('mongoose')
 const airbnbRoutes = require('./routes/airbnbs')
+const userRoutes = require('./routes/user')
 
 // Port number for Postman/local testing (default 4000 if not set in .env)
 const PORT = process.env.PORT || 4000
@@ -66,6 +67,7 @@ app.use((req, res, next) => {
  * Health check is useful in Postman to confirm server + DB status.
  */
 app.use('/api/airbnbs', airbnbRoutes)
+app.use('/api/user', userRoutes)
 
 app.get('/api/health', (_req, res) => {
   const states = {

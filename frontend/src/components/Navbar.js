@@ -6,11 +6,13 @@
  * Beginner notes:
  *  - activeTab stores which top navigation link was clicked.
  *  - NavTabs renders the center links.
+ *  - isScrolled becomes true after the user scrolls down about 80px.
  *  - SearchBar renders the large pill-shaped search area below the links.
+ *  - The compact search pill appears in the center when isScrolled is true.
  *  - Search results are sent to context so Home.js can filter listings.
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiGlobe, FiMenu, FiUser } from 'react-icons/fi'
 import { useAccommodationContext } from '../hooks/useAccommodationContext'
@@ -20,14 +22,28 @@ import './Navbar.css'
 
 const Navbar = () => {
   const [activeTab, setActiveTab] = useState('Places to stay')
+  const [isScrolled, setIsScrolled] = useState(false)
   const { dispatch } = useAccommodationContext()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 80)
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   const handleSearch = (searchParams) => {
     dispatch({ type: 'SET_SEARCH_PARAMS', payload: searchParams })
   }
 
   return (
-    <header className="airbnb-navbar">
+    <header className={`airbnb-navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
       <div className="airbnb-navbar-top">
         {/* Left: Airbnb logo and wordmark */}
         <div className="airbnb-navbar-left">
@@ -45,10 +61,32 @@ const Navbar = () => {
 
         {/* Center: old Airbnb navigation links */}
         <div className="airbnb-navbar-center">
-          <NavTabs
-            activeTab={activeTab}
-            onTabClick={setActiveTab}
-          />
+          <div className="airbnb-nav-tabs-wrap">
+            <NavTabs
+              activeTab={activeTab}
+              onTabClick={setActiveTab}
+            />
+          </div>
+
+          <button
+            className="compact-search-pill"
+            type="button"
+            aria-label="Open compact search"
+          >
+            <span className="compact-search-icon" aria-hidden="true">
+              🏠
+            </span>
+            <span className="compact-search-item">Anywhere</span>
+            <span className="compact-search-divider" aria-hidden="true" />
+            <span className="compact-search-item">Anytime</span>
+            <span className="compact-search-divider" aria-hidden="true" />
+            <span className="compact-search-item compact-search-item--muted">
+              Add guests
+            </span>
+            <span className="compact-search-button" aria-hidden="true">
+              🔍
+            </span>
+          </button>
         </div>
 
         {/* Right: host link, language button, and profile menu */}
