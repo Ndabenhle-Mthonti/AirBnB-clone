@@ -5,13 +5,38 @@
  *
  * These endpoints are beginner-friendly and easy to test in Postman.
  * Passwords are hashed with bcrypt before they are saved.
+ * Successful signup/login returns a JWT signed with jsonwebtoken.
+ * validator checks that emails and passwords have the right format.
  */
 
 const bcrypt = require('bcrypt')
+const validator = require('validator')
 const User = require('../models/userModel')
+const jwt = require('jsonwebtoken')
+
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' })
+}
 
 // Higher number = stronger hash, but slower. 10 is common for beginner projects.
 const SALT_ROUNDS = 10
+
+/**
+ * Password rule used by validator.isStrongPassword().
+ * This requires:
+ *  - at least 8 characters
+ *  - at least 1 lowercase letter
+ *  - at least 1 uppercase letter
+ *  - at least 1 number
+ *  - at least 1 symbol, for example ! @ # $
+ */
+const PASSWORD_RULES = {
+  minLength: 8,
+  minLowercase: 1,
+  minUppercase: 1,
+  minNumbers: 1,
+  minSymbols: 1,
+}
 
 // POST /api/user/signup
 const signupUser = async (req, res) => {
@@ -20,6 +45,17 @@ const signupUser = async (req, res) => {
   // Basic validation so Postman gets a clear error message
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' })
+  }
+
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: 'Please enter a valid email address' })
+  }
+
+  if (!validator.isStrongPassword(password, PASSWORD_RULES)) {
+    return res.status(400).json({
+      error:
+        'Password must be at least 8 characters and include uppercase, lowercase, number, and symbol',
+    })
   }
 
   try {
@@ -33,6 +69,7 @@ const signupUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS)
 
     const user = await User.create({ email, password: hashedPassword })
+    const token = createToken(user._id)
 
     res.status(201).json({
       message: 'Signup successful',
@@ -40,6 +77,7 @@ const signupUser = async (req, res) => {
         id: user._id,
         email: user.email,
       },
+      token,
     })
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -52,6 +90,10 @@ const loginUser = async (req, res) => {
 
   if (!email || !password) {
     return res.status(400).json({ error: 'Email and password are required' })
+  }
+
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: 'Please enter a valid email address' })
   }
 
   try {
@@ -68,12 +110,15 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ error: 'Invalid email or password' })
     }
 
+    const token = createToken(user._id)
+
     res.status(200).json({
       message: 'Login successful',
       user: {
         id: user._id,
         email: user.email,
       },
+      token,
     })
   } catch (error) {
     res.status(500).json({ error: error.message })

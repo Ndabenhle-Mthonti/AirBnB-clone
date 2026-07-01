@@ -10,12 +10,14 @@
  *  - SearchBar renders the large pill-shaped search area below the links.
  *  - The compact search pill appears in the center when isScrolled is true.
  *  - Search results are sent to context so Home.js can filter listings.
+ *  - The profile icon opens a small menu with Log in / Sign up links.
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiGlobe, FiMenu, FiUser } from 'react-icons/fi'
 import { useAccommodationContext } from '../hooks/useAccommodationContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 import NavTabs from './NavTabs'
 import SearchBar from './SearchBar'
 import './Navbar.css'
@@ -23,7 +25,11 @@ import './Navbar.css'
 const Navbar = () => {
   const [activeTab, setActiveTab] = useState('Places to stay')
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
+  const profileMenuRef = useRef(null)
+
   const { dispatch } = useAccommodationContext()
+  const { user, dispatch: authDispatch } = useAuthContext()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,8 +44,41 @@ const Navbar = () => {
     }
   }, [])
 
+  // Close the profile menu when the user clicks somewhere else on the page
+  useEffect(() => {
+    if (!isProfileMenuOpen) {
+      return
+    }
+
+    const handleClickOutside = (event) => {
+      if (!profileMenuRef.current?.contains(event.target)) {
+        setIsProfileMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isProfileMenuOpen])
+
   const handleSearch = (searchParams) => {
     dispatch({ type: 'SET_SEARCH_PARAMS', payload: searchParams })
+  }
+
+  const toggleProfileMenu = () => {
+    setIsProfileMenuOpen((open) => !open)
+  }
+
+  const closeProfileMenu = () => {
+    setIsProfileMenuOpen(false)
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    authDispatch({ type: 'LOGOUT' })
+    closeProfileMenu()
   }
 
   return (
@@ -99,12 +138,54 @@ const Navbar = () => {
             <FiGlobe />
           </button>
 
-          <button className="airbnb-profile-menu" type="button" aria-label="Open profile menu">
-            <FiMenu />
-            <span className="airbnb-user-avatar">
-              <FiUser />
-            </span>
-          </button>
+          <div className="airbnb-profile-menu-wrap" ref={profileMenuRef}>
+            <button
+              className="airbnb-profile-menu"
+              type="button"
+              aria-label="Open profile menu"
+              aria-expanded={isProfileMenuOpen}
+              onClick={toggleProfileMenu}
+            >
+              <FiMenu />
+              <span className="airbnb-user-avatar">
+                <FiUser />
+              </span>
+            </button>
+
+            {isProfileMenuOpen && (
+              <div className="airbnb-profile-dropdown">
+                {user ? (
+                  <>
+                    <p className="airbnb-profile-email">{user.email}</p>
+                    <button
+                      className="airbnb-profile-dropdown-item"
+                      type="button"
+                      onClick={handleLogout}
+                    >
+                      Log out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="airbnb-profile-dropdown-item"
+                      onClick={closeProfileMenu}
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="airbnb-profile-dropdown-item"
+                      onClick={closeProfileMenu}
+                    >
+                      Sign up
+                    </Link>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

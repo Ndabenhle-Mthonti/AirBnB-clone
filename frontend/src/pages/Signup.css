@@ -1,0 +1,87 @@
+.signup-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.signup-card h2 {
+  margin: 0 0 0.5rem 0;
+}
+
+.signup-hint {
+  color: #717171;
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.signup-form label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.signup-form input {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.signup-error {
+  color: #c13515;
+  background: #fff0eb;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin: 0 0 1rem 0;
+}
+
+.signup-button {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background: #ff385c;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background: #e31c5f;
+}
+
+.signup-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.signup-footer {
+  margin: 1.25rem 0 0 0;
+  text-align: center;
+  color: #717171;
+  font-size: 0.9rem;
+}
+
+.signup-footer a {
+  color: #ff385c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-footer a:hover {
+  text-decoration: underline;
+}

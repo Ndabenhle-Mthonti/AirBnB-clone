@@ -8,3 +8,5 @@
  */
 export const API_URL = '/api/airbnbs'
 export const HEALTH_URL = '/api/health'
+export const USER_SIGNUP_URL = '/api/user/signup'
+export const USER_LOGIN_URL = '/api/user/login'

@@ -13,6 +13,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AccommodationContextProvider } from './context/AccommodationContext'
 import Home from './pages/Home'
+import Signup from './pages/Signup'
+import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import AccommodationForm from './components/AccommodationForm'
 import HeroBanner from './components/HeroBanner'
@@ -39,6 +41,12 @@ function App() {
 
               {/* POST /api/airbnbs — create a new accommodation */}
               <Route path="/add" element={<AccommodationForm />} />
+
+              {/* POST /api/user/signup — create a new account */}
+              <Route path="/signup" element={<Signup />} />
+
+              {/* POST /api/user/login — log in to an existing account */}
+              <Route path="/login" element={<Login />} />
             </Routes>
           </div>
         </BrowserRouter>
