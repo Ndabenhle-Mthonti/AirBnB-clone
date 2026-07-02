@@ -18,12 +18,15 @@ import {
   validateListingForm,
 } from '../utils/buildAccommodationPayload'
 import { useAccommodationContext } from '../hooks/useAccommodationContext'
+import { useAuthContext } from '../hooks/useAuthContext'
 import { API_URL } from '../config/api'
+import { getAuthHeaders } from '../utils/authHeaders'
 
 function AccommodationForm() {
   const [state, dispatch] = useReducer(listingReducer, initialListingState)
   const [photoUrlInput, setPhotoUrlInput] = useState('')
   const { dispatch: accommodationDispatch } = useAccommodationContext()
+  const { user } = useAuthContext()
   const navigate = useNavigate()
 
   const totalSteps = 10
@@ -117,11 +120,11 @@ function AccommodationForm() {
     dispatch({ type: 'SUBMIT_ERROR', payload: null })
 
     try {
-      const body = buildAccommodationPayload(state)
+      const body = buildAccommodationPayload(state, user?.id)
 
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(body),
       })
 

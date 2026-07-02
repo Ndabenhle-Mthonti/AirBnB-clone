@@ -22,8 +22,11 @@ const {
   deleteAccommodation,
   updateAccommodation,
 } = require('../controllers/airbnbControllers')
+const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
+//require auth for all accommodation routes
+router.use(requireAuth)
 
 router.get('/', getAccommodations)
 router.get('/:id', getAccommodation)

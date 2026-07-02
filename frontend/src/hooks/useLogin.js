@@ -42,8 +42,9 @@ export const useLogin = () => {
         return false
       }
 
-      // Save the JWT so we can use it later for protected routes
+      // Save the JWT and user so auth survives a page refresh
       localStorage.setItem('token', json.token)
+      localStorage.setItem('user', JSON.stringify(json.user))
 
       // Update the auth context with the logged-in user
       dispatch({ type: 'LOGIN', payload: json.user })

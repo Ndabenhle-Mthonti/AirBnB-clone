@@ -9,30 +9,26 @@
  *  - Context lets both pages use the same data without prop drilling
  *
  * Data flow:
- *  1. Provider fetches GET /api/airbnbs when app loads
+ *  1. Provider fetches GET /api/airbnbs when a user is logged in
  *  2. Home reads accommodations from context
  *  3. Form dispatches ADD_ACCOMMODATION after successful POST
  */
 
 import { createContext, useReducer, useEffect } from 'react'
 import { API_URL } from '../config/api'
+import { useAuthContext } from '../hooks/useAuthContext'
+import { getAuthHeaders } from '../utils/authHeaders'
 
-// Create the context object (empty until Provider wraps the app)
 export const AccommodationContext = createContext(null)
 
-// Starting state before data is loaded from the backend
 const initialState = {
-  accommodations: null, // null = still loading, [] = empty, array = has data
+  accommodations: null,
   searchParams: null,
   error: null,
 }
 
-/**
- * Reducer — updates accommodation list based on actions
- */
 function accommodationReducer(state, action) {
   switch (action.type) {
-    // Replace entire list (used after GET /api/airbnbs)
     case 'SET_ACCOMMODATIONS':
       return {
         ...state,
@@ -40,7 +36,6 @@ function accommodationReducer(state, action) {
         error: null,
       }
 
-    // Add one new listing to the top (used after POST /api/airbnbs)
     case 'ADD_ACCOMMODATION':
       return {
         ...state,
@@ -48,18 +43,23 @@ function accommodationReducer(state, action) {
         error: null,
       }
 
-    // Store an error message to show on the Home page
     case 'SET_ERROR':
       return {
         ...state,
         error: action.payload,
       }
 
-    // Store values selected from the navbar search bar
     case 'SET_SEARCH_PARAMS':
       return {
         ...state,
         searchParams: action.payload,
+      }
+
+    case 'CLEAR_ACCOMMODATIONS':
+      return {
+        ...state,
+        accommodations: [],
+        error: action.payload,
       }
 
     default:
@@ -67,20 +67,26 @@ function accommodationReducer(state, action) {
   }
 }
 
-/**
- * Provider component — wrap App with this in index.js or App.js
- */
 export function AccommodationContextProvider({ children }) {
   const [state, dispatch] = useReducer(accommodationReducer, initialState)
+  const { user } = useAuthContext()
 
-  /**
-   * Fetch all accommodations from the backend once when the app starts.
-   * useEffect with [] runs only on first render.
-   */
   useEffect(() => {
+    if (!user) {
+      dispatch({
+        type: 'CLEAR_ACCOMMODATIONS',
+        payload: 'Please log in to view accommodations.',
+      })
+      return
+    }
+
     const fetchAccommodations = async () => {
+      dispatch({ type: 'SET_ACCOMMODATIONS', payload: null })
+
       try {
-        const response = await fetch(API_URL)
+        const response = await fetch(API_URL, {
+          headers: getAuthHeaders(),
+        })
         const json = await response.json()
 
         if (response.ok) {
@@ -101,9 +107,8 @@ export function AccommodationContextProvider({ children }) {
     }
 
     fetchAccommodations()
-  }, [])
+  }, [user])
 
-  // value is what child components receive via useAccommodationContext()
   return (
     <AccommodationContext.Provider value={{ ...state, dispatch }}>
       {children}

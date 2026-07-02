@@ -64,6 +64,7 @@ const accommodationSchema = new Schema(
      * "507f1f77bcf86cd799439011"
      */
     host: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     isSuperhost: { type: Boolean, default: false },
 
     // Booking rules

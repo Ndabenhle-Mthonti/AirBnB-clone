@@ -18,8 +18,9 @@ const Accommodation = require('../models/accommodation')
  * Return all accommodations, newest first.
  */
 const getAccommodations = async (req, res) => {
+  const user_id = req.user._id
   try {
-    const accommodations = await Accommodation.find({}).sort({ createdAt: -1 })
+    const accommodations = await Accommodation.find({user_id}).sort({ createdAt: -1 })
     res.status(200).json(accommodations)
   } catch (error) {
     res.status(500).json({ error: error.message })
@@ -57,7 +58,12 @@ const getAccommodation = async (req, res) => {
  */
 const createAccommodation = async (req, res) => {
   try {
-    const accommodation = await Accommodation.create(req.body)
+    const user_id = req.user._id
+    const accommodation = await Accommodation.create({
+      ...req.body,
+      host: req.user._id,
+      user_id,
+    })
     res.status(201).json(accommodation)
   } catch (error) {
     // 400 usually means validation failed (missing required fields, etc.)

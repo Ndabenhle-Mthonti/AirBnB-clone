@@ -10,7 +10,7 @@
  *  Routes → which page component to show
  */
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AccommodationContextProvider } from './context/AccommodationContext'
 import Home from './pages/Home'
 import Signup from './pages/Signup'
@@ -18,8 +18,10 @@ import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import AccommodationForm from './components/AccommodationForm'
 import HeroBanner from './components/HeroBanner'
+import { useAuthContext } from './hooks/useAuthContext'
 
 function App() {
+  const { user } = useAuthContext()
   return (
     <AccommodationContextProvider>
       <div className="App">
@@ -34,19 +36,22 @@ function App() {
                 element={
                   <>
                     <HeroBanner />
-                    <Home />
+                    {user ? <Home /> : <Navigate to="/login" />}
                   </>
                 }
               />
 
               {/* POST /api/airbnbs — create a new accommodation */}
-              <Route path="/add" element={<AccommodationForm />} />
+              <Route
+                path="/add"
+                element={user ? <AccommodationForm /> : <Navigate to="/login" />}
+              />
 
               {/* POST /api/user/signup — create a new account */}
-              <Route path="/signup" element={<Signup />} />
+              <Route path="/signup" element={ !user ?<Signup /> : <Navigate to = "/"/>} />
 
               {/* POST /api/user/login — log in to an existing account */}
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={ !user ?<Login /> : <Navigate to = "/"/>} />
             </Routes>
           </div>
         </BrowserRouter>

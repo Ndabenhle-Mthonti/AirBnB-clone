@@ -1,9 +1,6 @@
 /**
  * Navbar.js
- * ---------
- * Old Airbnb-style navigation component.
- *
- * Beginner notes:
+ 
  *  - activeTab stores which top navigation link was clicked.
  *  - NavTabs renders the center links.
  *  - isScrolled becomes true after the user scrolls down about 80px.
@@ -21,6 +18,7 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import NavTabs from './NavTabs'
 import SearchBar from './SearchBar'
 import './Navbar.css'
+
 
 const Navbar = () => {
   const [activeTab, setActiveTab] = useState('Places to stay')
@@ -77,6 +75,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     authDispatch({ type: 'LOGOUT' })
     closeProfileMenu()
   }

@@ -8,7 +8,7 @@
  * this file is the "translator" between them.
  */
 
-// Temporary host id until you add real user login/auth
+// Fallback host id only used if no logged-in user id is passed in
 const DEFAULT_HOST_ID = '507f1f77bcf86cd799439011'
 
 /**
@@ -38,9 +38,10 @@ function buildHouseRules(rules) {
 }
 
 /**
- * Main export — call this right before fetch() in AccommodationForm
+ * Main export — call this right before fetch() in AccommodationForm.
+ * hostId should be the logged-in user's id from auth context.
  */
-export function buildAccommodationPayload(formState) {
+export function buildAccommodationPayload(formState, hostId) {
   const coverPhoto =
     formState.photos[formState.coverPhotoIndex] || formState.photos[0] || ''
 
@@ -71,7 +72,7 @@ export function buildAccommodationPayload(formState) {
       country: formState.location.country,
     },
 
-    host: DEFAULT_HOST_ID,
+    host: hostId || DEFAULT_HOST_ID,
 
     minNights: Number(formState.availability.minNights),
     checkInTime: formState.rules.checkInTime,

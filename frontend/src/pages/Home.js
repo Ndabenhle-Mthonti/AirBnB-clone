@@ -3,16 +3,18 @@
  * -------
  * Main page — displays all accommodations from the backend.
  *
- * Data comes from AccommodationContext (fetched in AccommodationContext.js).
- * We do NOT fetch here directly — that keeps one single source of truth.
+ * Data comes from AccommodationContext (fetched when the user is logged in).
+ * Protected routes on the backend require a valid JWT in the request.
  */
 
+import { Link } from 'react-router-dom'
 import AccommodationDetails from '../components/AccommodationDetails'
 import { useAccommodationContext } from '../hooks/useAccommodationContext'
-import { API_URL } from '../config/api'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 const Home = () => {
   const { accommodations, searchParams, error } = useAccommodationContext()
+  const { user } = useAuthContext()
 
   const visibleAccommodations =
     accommodations && searchParams?.destination
@@ -23,26 +25,34 @@ const Home = () => {
         )
       : accommodations
 
+  if (!user) {
+    return (
+      <div className="home">
+        <h2>Available Accommodations</h2>
+        <p className="error">
+          Please log in to view accommodations.{' '}
+          <Link to="/login">Log in</Link> or <Link to="/signup">sign up</Link>.
+        </p>
+      </div>
+    )
+  }
+
   return (
     <div className="home">
       <h2>Available Accommodations</h2>
 
-      {/* null means the GET request is still in progress */}
       {accommodations === null && !error && <p>Loading accommodations...</p>}
 
-      {/* Backend unreachable or returned an error */}
       {error && <p className="error">{error}</p>}
 
-      {/* API worked but database has no listings yet */}
-      {visibleAccommodations && visibleAccommodations.length === 0 && (
+      {visibleAccommodations && visibleAccommodations.length === 0 && !error && (
         <p>
           {searchParams?.destination
             ? `No accommodations found in ${searchParams.destination}.`
-            : `No accommodations yet. Go to Add listing or use Postman POST ${API_URL}`}
+            : 'No accommodations yet. Go to Become a host to add your first listing.'}
         </p>
       )}
 
-      {/* Render one card per accommodation from MongoDB */}
       <div className="airbnbs">
         {visibleAccommodations &&
           visibleAccommodations.map((accommodation) => (
