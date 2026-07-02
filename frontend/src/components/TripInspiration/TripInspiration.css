@@ -1,0 +1,94 @@
+.trip-inspiration {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.trip-inspiration__heading {
+  color: #484848;
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 2rem 0;
+}
+
+.trip-inspiration__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.trip-inspiration__card {
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.trip-inspiration__card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+.trip-inspiration__image-wrap {
+  flex: 7;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.trip-inspiration__image {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.trip-inspiration__label {
+  background: #ff5a5f;
+  display: flex;
+  flex: 3;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  padding: 0.75rem 1rem;
+}
+
+.trip-inspiration__city {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.trip-inspiration__region {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 400;
+  margin: 0.2rem 0 0 0;
+}
+
+/* Tablet: 3 cards per row */
+@media (max-width: 1024px) {
+  .trip-inspiration__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Mobile: horizontal scroll with snap */
+@media (max-width: 640px) {
+  .trip-inspiration__grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x mandatory;
+  }
+
+  .trip-inspiration__card {
+    flex: 0 0 65%;
+    scroll-snap-align: start;
+  }
+}

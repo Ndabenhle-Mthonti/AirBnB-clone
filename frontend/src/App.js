@@ -12,12 +12,18 @@
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AccommodationContextProvider } from './context/AccommodationContext'
-import Home from './pages/Home'
+import AccommodationsPage from './pages/AccommodationsPage/AccommodationsPage'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
 import AccommodationForm from './components/AccommodationForm'
 import HeroBanner from './components/HeroBanner'
+import TripInspiration from './components/TripInspiration/TripInspiration'
+import DiscoverExperiences from './components/DiscoverExperiences/DiscoverExperiences'
+import GiftCards from './components/GiftCards/GiftCards'
+import HostingCTA from './components/HostingCTA/HostingCTA'
+import FutureGetaways from './components/FutureGetaways/FutureGetaways'
+import Footer from './components/Footer/Footer'
 import { useAuthContext } from './hooks/useAuthContext'
 
 function App() {
@@ -36,10 +42,16 @@ function App() {
                 element={
                   <>
                     <HeroBanner />
-                    {user ? <Home /> : <Navigate to="/login" />}
+                    <TripInspiration />
+                    <DiscoverExperiences />
+                    <GiftCards />
+                    <HostingCTA />
+                    <FutureGetaways />
                   </>
                 }
               />
+
+              <Route path="/accommodations" element={<AccommodationsPage />} />
 
               {/* POST /api/airbnbs — create a new accommodation */}
               <Route
@@ -54,6 +66,7 @@ function App() {
               <Route path="/login" element={ !user ?<Login /> : <Navigate to = "/"/>} />
             </Routes>
           </div>
+          <Footer />
         </BrowserRouter>
       </div>
     </AccommodationContextProvider>

@@ -6,7 +6,7 @@
  *  - isScrolled becomes true after the user scrolls down about 80px.
  *  - SearchBar renders the large pill-shaped search area below the links.
  *  - The compact search pill appears in the center when isScrolled is true.
- *  - Search results are sent to context so Home.js can filter listings.
+ *  - SearchBar navigates to /accommodations when a destination is chosen.
  *  - The profile icon opens a small menu with Log in / Sign up links.
  */
 

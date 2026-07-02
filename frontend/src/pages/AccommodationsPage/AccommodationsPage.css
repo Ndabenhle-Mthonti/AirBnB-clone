@@ -1,0 +1,30 @@
+.accommodations-page {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.accommodations-page__heading {
+  color: #484848;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+}
+
+.accommodations-page__status {
+  color: #717171;
+  margin: 0 0 1rem 0;
+}
+
+.accommodations-page__error {
+  background: #fff0eb;
+  border-radius: 8px;
+  color: #c13515;
+  margin: 0 0 1rem 0;
+  padding: 1rem;
+}
+
+.accommodations-page__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}

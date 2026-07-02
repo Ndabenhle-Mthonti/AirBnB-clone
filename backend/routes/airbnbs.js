@@ -7,16 +7,18 @@
  * Base path (set in server.js): /api/airbnbs
  *
  * Endpoints:
- *  GET    /api/airbnbs       -> getAccommodations
- *  GET    /api/airbnbs/:id   -> getAccommodation
- *  POST   /api/airbnbs       -> createAccommodation
- *  PATCH  /api/airbnbs/:id   -> updateAccommodation
- *  DELETE /api/airbnbs/:id   -> deleteAccommodation
+ *  GET    /api/airbnbs         -> getAccommodations (public)
+ *  GET    /api/airbnbs/cities  -> getCities (public)
+ *  GET    /api/airbnbs/:id     -> getAccommodation (public)
+ *  POST   /api/airbnbs         -> createAccommodation (auth required)
+ *  PATCH  /api/airbnbs/:id     -> updateAccommodation (auth required)
+ *  DELETE /api/airbnbs/:id     -> deleteAccommodation (auth required)
  */
 
 const express = require('express')
 const {
   getAccommodations,
+  getCities,
   getAccommodation,
   createAccommodation,
   deleteAccommodation,
@@ -25,13 +27,15 @@ const {
 const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
-//require auth for all accommodation routes
-router.use(requireAuth)
 
+// Public browsing routes
+router.get('/cities', getCities)
 router.get('/', getAccommodations)
 router.get('/:id', getAccommodation)
-router.post('/', createAccommodation)
-router.delete('/:id', deleteAccommodation)
-router.patch('/:id', updateAccommodation)
+
+// Protected routes — require a logged-in user
+router.post('/', requireAuth, createAccommodation)
+router.patch('/:id', requireAuth, updateAccommodation)
+router.delete('/:id', requireAuth, deleteAccommodation)
 
 module.exports = router

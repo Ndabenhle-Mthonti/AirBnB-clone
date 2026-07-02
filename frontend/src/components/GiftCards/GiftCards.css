@@ -1,0 +1,144 @@
+.gift-cards {
+  background: #ffffff;
+  margin-top: 3rem;
+  padding: 56px 0;
+  width: 100%;
+}
+
+.gift-cards__inner {
+  align-items: center;
+  display: flex;
+  gap: 2.5rem;
+}
+
+.gift-cards__text {
+  flex: 0 0 28%;
+}
+
+.gift-cards__heading {
+  color: #484848;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 1.25rem 0;
+  max-width: 11ch;
+}
+
+.gift-cards__button {
+  background: #222222;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  transition: background-color 0.2s ease;
+}
+
+.gift-cards__button:hover {
+  background: #000000;
+}
+
+.gift-cards__cluster {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  height: 180px;
+  justify-content: center;
+  position: relative;
+}
+
+.gift-cards__card {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+  height: 90px;
+  overflow: hidden;
+  position: absolute;
+  width: 140px;
+}
+
+.gift-cards__card-image {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.gift-cards__card--left {
+  left: 18%;
+  top: 18%;
+  transform: rotate(-6deg);
+  transition: transform 0.3s ease;
+  z-index: 1;
+}
+
+.gift-cards__card--center {
+  align-items: center;
+  background: #ff5a5f;
+  display: flex;
+  justify-content: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.gift-cards__card--right {
+  right: 18%;
+  top: 18%;
+  transform: rotate(6deg);
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+
+.gift-cards__cluster:hover .gift-cards__card--left {
+  transform: rotate(-8deg);
+}
+
+.gift-cards__cluster:hover .gift-cards__card--right {
+  transform: rotate(8deg);
+}
+
+.gift-cards__logo {
+  fill: #ffffff;
+  height: 36px;
+  width: 36px;
+}
+
+/* Tablet and mobile: stack vertically */
+@media (max-width: 768px) {
+  .gift-cards {
+    padding: 48px 0;
+  }
+
+  .gift-cards__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .gift-cards__text {
+    flex: none;
+    width: 100%;
+  }
+
+  .gift-cards__heading {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .gift-cards__cluster {
+    height: 140px;
+    width: 100%;
+  }
+
+  .gift-cards__card {
+    height: 70px;
+    width: 110px;
+  }
+
+  .gift-cards__logo {
+    height: 28px;
+    width: 28px;
+  }
+}

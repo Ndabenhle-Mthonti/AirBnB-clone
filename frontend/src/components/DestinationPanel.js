@@ -1,59 +1,64 @@
 /**
  * DestinationPanel.js
  * -------------------
- * Shows a search input and city suggestions.
- * Later, the hardcoded city list can be replaced with cities from the backend.
+ * Location dropdown for the search bar.
+ *
+ * Beginner notes:
+ *  - "View all locations" shows every accommodation in the database.
+ *  - Cities below come from GET /api/airbnbs/cities (only cities with listings).
+ *  - Clicking a city opens /accommodations?city=... with filtered results.
  */
 
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { CITIES_URL } from '../config/api'
 import './DestinationPanel.css'
 
-const popularCities = [
-  {
-    name: 'Cape Town',
-    image:
-      'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Johannesburg',
-    image:
-      'https://images.unsplash.com/photo-1577948000111-9c970dfe3743?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Durban',
-    image:
-      'https://images.unsplash.com/photo-1579493934830-eab45746b51b?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Pretoria',
-    image:
-      'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Port Elizabeth',
-    image:
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Knysna',
-    image:
-      'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Stellenbosch',
-    image:
-      'https://images.unsplash.com/photo-1528823872057-9c018a7a7553?auto=format&fit=crop&w=300&q=80',
-  },
-  {
-    name: 'Mbombela',
-    image:
-      'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=300&q=80',
-  },
-]
+const DestinationPanel = ({ query, onQueryChange, onClose, onViewAllLocations }) => {
+  const [cities, setCities] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-const DestinationPanel = ({ query, onQueryChange, onSelectCity }) => {
-  const filteredCities = popularCities.filter((city) =>
-    city.name.toLowerCase().includes(query.toLowerCase()),
+  useEffect(() => {
+    const fetchCities = async () => {
+      setIsLoading(true)
+      setError('')
+
+      try {
+        const response = await fetch(CITIES_URL)
+        const json = await response.json()
+
+        if (response.ok) {
+          setCities(json)
+        } else {
+          setError(json.error || 'Could not load cities')
+        }
+      } catch (err) {
+        setError('Could not reach the server. Is the backend running?')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCities()
+  }, [])
+
+  const filteredCities = cities.filter((city) =>
+    city.toLowerCase().includes(query.toLowerCase()),
   )
+
+  const handleViewAllLocations = () => {
+    onViewAllLocations?.()
+    onClose?.()
+    navigate('/accommodations')
+  }
+
+  const handleCitySelect = (city) => {
+    onQueryChange(city)
+    onClose?.()
+    navigate(`/accommodations?city=${encodeURIComponent(city)}`)
+  }
 
   return (
     <div
@@ -69,18 +74,49 @@ const DestinationPanel = ({ query, onQueryChange, onSelectCity }) => {
         onChange={(event) => onQueryChange(event.target.value)}
       />
 
-      <div className="destination-city-grid">
-        {filteredCities.map((city) => (
-          <button
-            className="destination-city-card"
-            key={city.name}
-            type="button"
-            onClick={() => onSelectCity(city.name)}
-          >
-            <img src={city.image} alt={city.name} />
-            <span>{city.name}</span>
-          </button>
-        ))}
+      <div className="destination-list">
+        <button
+          className="destination-list-item destination-list-item--all"
+          type="button"
+          onClick={handleViewAllLocations}
+        >
+          View all locations
+        </button>
+
+        {isLoading && (
+          <p className="destination-status">Loading South African cities...</p>
+        )}
+
+        {error && (
+          <p className="destination-status destination-status--error">{error}</p>
+        )}
+
+        {!isLoading && !error && (
+          <>
+            <p className="destination-section-title">South African cities</p>
+
+            {filteredCities.map((city) => (
+              <button
+                key={city}
+                className="destination-list-item"
+                type="button"
+                onClick={() => handleCitySelect(city)}
+              >
+                {city}
+              </button>
+            ))}
+
+            {cities.length === 0 && (
+              <p className="destination-status">
+                No cities with accommodations yet. Add a listing to see cities here.
+              </p>
+            )}
+
+            {cities.length > 0 && filteredCities.length === 0 && (
+              <p className="destination-status">No cities match your search.</p>
+            )}
+          </>
+        )}
       </div>
     </div>
   )

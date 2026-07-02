@@ -1,0 +1,88 @@
+.future-getaways {
+  margin-top: 3rem;
+  width: 100%;
+}
+
+.future-getaways__heading {
+  color: #484848;
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+}
+
+.future-getaways__tabs {
+  border-bottom: 1px solid #ebebeb;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.future-getaways__tab {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #717171;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: -1px;
+  padding: 0 0 8px 0;
+  white-space: nowrap;
+}
+
+.future-getaways__tab--active {
+  border-bottom-color: #222222;
+  color: #222222;
+  font-weight: 700;
+}
+
+.future-getaways__grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.future-getaways__item {
+  cursor: default;
+}
+
+.future-getaways__landmark {
+  color: #222222;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.future-getaways__location {
+  color: #717171;
+  font-size: 13px;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Tablet: 2 columns */
+@media (max-width: 1024px) {
+  .future-getaways__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile: single column grid, scrollable tabs */
+@media (max-width: 768px) {
+  .future-getaways__tabs {
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .future-getaways__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .future-getaways__grid {
+    grid-template-columns: 1fr;
+  }
+}

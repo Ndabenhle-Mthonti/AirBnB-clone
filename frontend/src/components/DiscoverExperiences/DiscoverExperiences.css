@@ -1,0 +1,102 @@
+.discover-experiences {
+  margin-top: 3rem;
+  width: 100%;
+}
+
+.discover-experiences__heading {
+  color: #484848;
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0 0 2rem 0;
+}
+
+.discover-experiences__grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.discover-experiences__card {
+  border-radius: 12px;
+  height: 380px;
+  overflow: hidden;
+  position: relative;
+}
+
+.discover-experiences__image-wrap {
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.discover-experiences__image {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  width: 100%;
+}
+
+.discover-experiences__card:hover .discover-experiences__image {
+  transform: scale(1.05);
+}
+
+.discover-experiences__gradient {
+  background: linear-gradient(
+    to top right,
+    rgba(0, 0, 0, 0.55) 0%,
+    rgba(0, 0, 0, 0.25) 40%,
+    transparent 70%
+  );
+  inset: 0;
+  position: absolute;
+}
+
+.discover-experiences__content {
+  bottom: 0;
+  left: 0;
+  padding: 24px;
+  position: absolute;
+  z-index: 2;
+}
+
+.discover-experiences__title {
+  color: #ffffff;
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 1rem 0;
+  max-width: 16ch;
+}
+
+.discover-experiences__button {
+  background: #ffffff;
+  border: none;
+  border-radius: 999px;
+  color: #484848;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  transition: background-color 0.2s ease;
+}
+
+.discover-experiences__button:hover {
+  background: #f0f0f0;
+}
+
+/* Tablet and mobile: single column */
+@media (max-width: 768px) {
+  .discover-experiences__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .discover-experiences__card {
+    height: 280px;
+  }
+
+  .discover-experiences__title {
+    font-size: 1.4rem;
+  }
+}

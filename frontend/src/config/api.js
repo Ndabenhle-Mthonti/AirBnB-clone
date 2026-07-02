@@ -7,6 +7,7 @@
  * In development, package.json "proxy" forwards /api/* to http://localhost:4000
  */
 export const API_URL = '/api/airbnbs'
+export const CITIES_URL = '/api/airbnbs/cities'
 export const HEALTH_URL = '/api/health'
 export const USER_SIGNUP_URL = '/api/user/signup'
 export const USER_LOGIN_URL = '/api/user/login'

@@ -6,12 +6,13 @@
  *
  * Beginner notes:
  *  - activePanel controls which dropdown is open.
- *  - The location input filters cities in DestinationPanel.
+ *  - The location dropdown loads cities from the database and navigates on click.
  *  - The date fields both open DatePanel because that panel chooses a range.
  *  - onSearch sends the final search values to Navbar, then context.
  */
 
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
 import DestinationPanel from './DestinationPanel'
 import DatePanel from './DatePanel'
@@ -42,6 +43,7 @@ const getGuestSummary = (guests) => {
 
 const SearchBar = ({ onSearch = () => {} }) => {
   const searchRef = useRef(null)
+  const navigate = useNavigate()
   const [activePanel, setActivePanel] = useState(null)
   const [destination, setDestination] = useState('')
   const [destinationQuery, setDestinationQuery] = useState('')
@@ -91,9 +93,9 @@ const SearchBar = ({ onSearch = () => {} }) => {
     setActivePanel('destination')
   }
 
-  const handleDestinationSelect = (city) => {
-    setDestination(city)
-    setDestinationQuery(city)
+  const handleViewAllLocations = () => {
+    setDestination('All locations')
+    setDestinationQuery('All locations')
     setValidationMessage('')
     setActivePanel(null)
   }
@@ -101,14 +103,21 @@ const SearchBar = ({ onSearch = () => {} }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    if (!destination.trim()) {
-      setValidationMessage('Please enter a destination')
-      setActivePanel('destination')
+    const trimmedDestination = destination.trim()
+
+    if (
+      !trimmedDestination ||
+      trimmedDestination.toLowerCase() === 'all locations'
+    ) {
+      onSearch({ destination: 'All locations', checkIn, checkOut, guests })
+      setActivePanel(null)
+      navigate('/accommodations')
       return
     }
 
-    onSearch({ destination, checkIn, checkOut, guests })
+    onSearch({ destination: trimmedDestination, checkIn, checkOut, guests })
     setActivePanel(null)
+    navigate(`/accommodations?city=${encodeURIComponent(trimmedDestination)}`)
   }
 
   return (
@@ -189,7 +198,8 @@ const SearchBar = ({ onSearch = () => {} }) => {
             setDestinationQuery(value)
             setDestination(value)
           }}
-          onSelectCity={handleDestinationSelect}
+          onViewAllLocations={handleViewAllLocations}
+          onClose={() => setActivePanel(null)}
         />
       )}
 

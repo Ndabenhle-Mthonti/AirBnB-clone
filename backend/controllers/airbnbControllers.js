@@ -16,12 +16,34 @@ const Accommodation = require('../models/accommodation')
 /**
  * GET /api/airbnbs
  * Return all accommodations, newest first.
+ * Optional query: ?city=Cape Town (case-insensitive match on location.city)
  */
 const getAccommodations = async (req, res) => {
-  const user_id = req.user._id
   try {
-    const accommodations = await Accommodation.find({user_id}).sort({ createdAt: -1 })
+    const { city } = req.query
+    const filter = {}
+
+    if (city) {
+      filter['location.city'] = { $regex: new RegExp(`^${city.trim()}$`, 'i') }
+    }
+
+    const accommodations = await Accommodation.find(filter).sort({ createdAt: -1 })
     res.status(200).json(accommodations)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+/**
+ * GET /api/airbnbs/cities
+ * Return a sorted list of distinct cities that have accommodations.
+ */
+const getCities = async (req, res) => {
+  try {
+    const cities = await Accommodation.distinct('location.city')
+    const sortedCities = cities.filter(Boolean).sort((a, b) => a.localeCompare(b))
+
+    res.status(200).json(sortedCities)
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
@@ -125,6 +147,7 @@ const updateAccommodation = async (req, res) => {
 
 module.exports = {
   getAccommodations,
+  getCities,
   getAccommodation,
   createAccommodation,
   deleteAccommodation,
