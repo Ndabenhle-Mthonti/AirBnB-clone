@@ -10,7 +10,7 @@
  */
 
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useLogin } from '../hooks/useLogin'
 import './Login.css'
 
@@ -20,14 +20,24 @@ const Login = () => {
 
   const { login, error, isLoading } = useLogin()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const success = await login(email, password)
+    /** Client-side validation (rubric: clear error messages) */
+    if (!email.trim()) {
+      return
+    }
+
+    if (!password) {
+      return
+    }
+
+    const success = await login(email.trim(), password)
 
     if (success) {
-      navigate('/')
+      navigate('/admin')
     }
   }
 
@@ -35,7 +45,12 @@ const Login = () => {
     <div className="login-page">
       <div className="login-card">
         <h2>Welcome back</h2>
-        <p className="login-hint">Log in with the email and password you used to sign up.</p>
+        <p className="login-hint">
+          Log in with the email and password you used to sign up.
+          {location.state?.from === 'booking' && (
+            <span className="login-booking-note"> You need to be logged in to reserve.</span>
+          )}
+        </p>
 
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="login-email">Email</label>
@@ -46,6 +61,7 @@ const Login = () => {
             onChange={(event) => setEmail(event.target.value)}
             placeholder="you@example.com"
             autoComplete="email"
+            required
           />
 
           <label htmlFor="login-password">Password</label>
@@ -56,6 +72,8 @@ const Login = () => {
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Your password"
             autoComplete="current-password"
+            required
+            minLength={8}
           />
 
           {error && <p className="login-error">{error}</p>}

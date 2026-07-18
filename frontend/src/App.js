@@ -3,16 +3,26 @@
  * ------
  * Root component of the React app.
  *
- * Structure:
- *  AccommodationContextProvider → shares API data with all pages
- *  BrowserRouter → handles URL routes (/ and /add)
- *  Navbar → navigation links
- *  Routes → which page component to show
+ * Routes:
+ *  /                        → Home (marketing sections only)
+ *  /accommodations          → Browse all / filter by city
+ *  /accommodations/:id      → Listing details + booking
+ *  /add                     → Create listing (auth)
+ *  /admin                   → Host dashboard (auth)
+ *  /admin/listings          → View own listings (auth)
+ *  /admin/listings/:id/edit → Update listing (auth)
+ *  /reservations            → Guest bookings (auth)
+ *  /login, /signup          → Authentication
  */
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AccommodationContextProvider } from './context/AccommodationContext'
 import AccommodationsPage from './pages/AccommodationsPage/AccommodationsPage'
+import AccommodationDetailPage from './pages/AccommodationDetailPage/AccommodationDetailPage'
+import AdminDashboard from './pages/AdminDashboard/AdminDashboard'
+import MyListingsPage from './pages/MyListingsPage/MyListingsPage'
+import EditListingPage from './pages/EditListingPage/EditListingPage'
+import ReservationsPage from './pages/ReservationsPage/ReservationsPage'
 import Signup from './pages/Signup'
 import Login from './pages/Login'
 import Navbar from './components/Navbar'
@@ -26,8 +36,15 @@ import FutureGetaways from './components/FutureGetaways/FutureGetaways'
 import Footer from './components/Footer/Footer'
 import { useAuthContext } from './hooks/useAuthContext'
 
+/** Only logged-in users can see this page — otherwise send to /login */
+function RequireAuth({ children }) {
+  const { user } = useAuthContext()
+  return user ? children : <Navigate to="/login" />
+}
+
 function App() {
   const { user } = useAuthContext()
+
   return (
     <AccommodationContextProvider>
       <div className="App">
@@ -36,7 +53,6 @@ function App() {
 
           <div className="pages">
             <Routes>
-              {/* GET /api/airbnbs — list all accommodations */}
               <Route
                 path="/"
                 element={
@@ -52,18 +68,21 @@ function App() {
               />
 
               <Route path="/accommodations" element={<AccommodationsPage />} />
+              <Route path="/accommodations/:id" element={<AccommodationDetailPage />} />
 
-              {/* POST /api/airbnbs — create a new accommodation */}
+              <Route path="/add" element={<RequireAuth><AccommodationForm /></RequireAuth>} />
+
+              <Route path="/admin" element={<RequireAuth><AdminDashboard /></RequireAuth>} />
+              <Route path="/admin/listings" element={<RequireAuth><MyListingsPage /></RequireAuth>} />
               <Route
-                path="/add"
-                element={user ? <AccommodationForm /> : <Navigate to="/login" />}
+                path="/admin/listings/:id/edit"
+                element={<RequireAuth><EditListingPage /></RequireAuth>}
               />
 
-              {/* POST /api/user/signup — create a new account */}
-              <Route path="/signup" element={ !user ?<Signup /> : <Navigate to = "/"/>} />
+              <Route path="/reservations" element={<RequireAuth><ReservationsPage /></RequireAuth>} />
 
-              {/* POST /api/user/login — log in to an existing account */}
-              <Route path="/login" element={ !user ?<Login /> : <Navigate to = "/"/>} />
+              <Route path="/signup" element={!user ? <Signup /> : <Navigate to="/" />} />
+              <Route path="/login" element={!user ? <Login /> : <Navigate to="/admin" />} />
             </Routes>
           </div>
           <Footer />

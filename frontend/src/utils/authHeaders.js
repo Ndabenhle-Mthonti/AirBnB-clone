@@ -1,23 +1,8 @@
 /**
  * authHeaders.js
  * --------------
- * Builds request headers for protected backend routes.
- *
- * Beginner notes:
- *  - The backend requireAuth middleware expects: Authorization: Bearer <token>
- *  - We read the token from localStorage (saved on login/signup).
+ * Re-exports from authSession.js (kept so older imports still work).
+ * Beginners: you can import everything from '../utils/authSession' instead.
  */
 
-export function getAuthHeaders() {
-  const token = localStorage.getItem('token')
-
-  const headers = {
-    'Content-Type': 'application/json',
-  }
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`
-  }
-
-  return headers
-}
+export { getAuthHeaders, hasAuthToken } from './authSession'

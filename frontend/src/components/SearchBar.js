@@ -94,8 +94,8 @@ const SearchBar = ({ onSearch = () => {} }) => {
   }
 
   const handleViewAllLocations = () => {
-    setDestination('All locations')
-    setDestinationQuery('All locations')
+    setDestination('All accommodations')
+    setDestinationQuery('All accommodations')
     setValidationMessage('')
     setActivePanel(null)
   }
@@ -107,9 +107,12 @@ const SearchBar = ({ onSearch = () => {} }) => {
 
     if (
       !trimmedDestination ||
+      trimmedDestination.toLowerCase() === 'all accommodations' ||
       trimmedDestination.toLowerCase() === 'all locations'
     ) {
-      onSearch({ destination: 'All locations', checkIn, checkOut, guests })
+      setDestination('All accommodations')
+      setDestinationQuery('All accommodations')
+      onSearch({ destination: 'All accommodations', checkIn, checkOut, guests })
       setActivePanel(null)
       navigate('/accommodations')
       return

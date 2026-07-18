@@ -1,22 +1,18 @@
 /**
  * useLogin.js
  * -----------
- * Custom hook that handles login logic in one place.
- *
- * Beginner notes:
- *  - Hooks let us reuse the same logic in different components.
- *  - login() calls the backend and updates auth state on success.
- *  - error and isLoading are returned so the page can show messages.
+ * Handles the login form → API → save session flow.
  */
 
 import { useState } from 'react'
 import { USER_LOGIN_URL } from '../config/api'
+import { saveAuthSession } from '../utils/authSession'
 import { useAuthContext } from './useAuthContext'
 
 export const useLogin = () => {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const { dispatch } = useAuthContext()
+  const { loginUser } = useAuthContext()
 
   const login = async (email, password) => {
     if (!email || !password) {
@@ -42,12 +38,9 @@ export const useLogin = () => {
         return false
       }
 
-      // Save the JWT and user so auth survives a page refresh
-      localStorage.setItem('token', json.token)
-      localStorage.setItem('user', JSON.stringify(json.user))
-
-      // Update the auth context with the logged-in user
-      dispatch({ type: 'LOGIN', payload: json.user })
+      // Step 1: save to localStorage  |  Step 2: update React state
+      saveAuthSession(json.token, json.user)
+      loginUser(json.user)
 
       setIsLoading(false)
       return true

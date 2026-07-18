@@ -75,16 +75,32 @@ const getAccommodation = async (req, res) => {
 }
 
 /**
+ * GET /api/airbnbs/mine
+ * Return listings owned by the logged-in host (admin "View listings" page).
+ */
+const getMyAccommodations = async (req, res) => {
+  try {
+    const accommodations = await Accommodation.find({ user_id: req.user._id }).sort({
+      createdAt: -1,
+    })
+    res.status(200).json(accommodations)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+/**
  * POST /api/airbnbs
  * Create a new accommodation from req.body (JSON sent from Postman).
+ * host and user_id always come from the JWT — never from the request body.
  */
 const createAccommodation = async (req, res) => {
   try {
-    const user_id = req.user._id
+    const { host, user_id, ...safeBody } = req.body
     const accommodation = await Accommodation.create({
-      ...req.body,
+      ...safeBody,
       host: req.user._id,
-      user_id,
+      user_id: req.user._id,
     })
     res.status(201).json(accommodation)
   } catch (error) {
@@ -96,6 +112,7 @@ const createAccommodation = async (req, res) => {
 /**
  * DELETE /api/airbnbs/:id
  * Remove one accommodation from the database.
+ * Only the host who created the listing may delete it.
  */
 const deleteAccommodation = async (req, res) => {
   const { id } = req.params
@@ -105,13 +122,18 @@ const deleteAccommodation = async (req, res) => {
   }
 
   try {
-    const accommodation = await Accommodation.findOneAndDelete({ _id: id })
+    const accommodation = await Accommodation.findById(id)
 
     if (!accommodation) {
       return res.status(404).json({ error: 'No such accommodation' })
     }
 
-    res.status(200).json(accommodation)
+    if (!accommodation.user_id.equals(req.user._id)) {
+      return res.status(403).json({ error: 'Not authorized to delete this listing' })
+    }
+
+    await accommodation.deleteOne()
+    res.status(200).json({ message: 'Listing deleted', _id: id })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
@@ -120,6 +142,7 @@ const deleteAccommodation = async (req, res) => {
 /**
  * PATCH /api/airbnbs/:id
  * Update only the fields you send in req.body.
+ * Only the host who owns the listing may update it.
  */
 const updateAccommodation = async (req, res) => {
   const { id } = req.params
@@ -129,15 +152,23 @@ const updateAccommodation = async (req, res) => {
   }
 
   try {
-    const accommodation = await Accommodation.findOneAndUpdate(
-      { _id: id },
-      { ...req.body },
-      { new: true, runValidators: true },
-    )
+    const existing = await Accommodation.findById(id)
 
-    if (!accommodation) {
+    if (!existing) {
       return res.status(404).json({ error: 'No such accommodation' })
     }
+
+    if (!existing.user_id.equals(req.user._id)) {
+      return res.status(403).json({ error: 'Not authorized to update this listing' })
+    }
+
+    const { host, user_id, ...safeBody } = req.body
+
+    const accommodation = await Accommodation.findOneAndUpdate(
+      { _id: id },
+      safeBody,
+      { new: true, runValidators: true },
+    )
 
     res.status(200).json(accommodation)
   } catch (error) {
@@ -148,6 +179,7 @@ const updateAccommodation = async (req, res) => {
 module.exports = {
   getAccommodations,
   getCities,
+  getMyAccommodations,
   getAccommodation,
   createAccommodation,
   deleteAccommodation,

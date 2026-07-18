@@ -1,0 +1,113 @@
+.detail-page {
+  margin-top: 1rem;
+}
+
+.detail-page__back {
+  color: #484848;
+  display: inline-block;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
+}
+
+.detail-page__back:hover {
+  text-decoration: underline;
+}
+
+.detail-page__header {
+  margin-bottom: 1.25rem;
+}
+
+.detail-page__title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+}
+
+.detail-page__subtitle {
+  color: #717171;
+  margin: 0;
+}
+
+.detail-page__rating {
+  margin-left: 0.5rem;
+}
+
+.detail-page__superhost {
+  color: #ff385c;
+  font-weight: 600;
+}
+
+.detail-page__airbnb-link {
+  color: #484848;
+  display: inline-block;
+  font-size: 0.9rem;
+  margin-top: 0.35rem;
+  text-decoration: underline;
+}
+
+.detail-page__layout {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+  margin-top: 2rem;
+}
+
+.detail-page__main h2 {
+  font-size: 1.35rem;
+  margin: 0 0 0.35rem;
+}
+
+.detail-page__main p {
+  color: #484848;
+  line-height: 1.6;
+}
+
+.detail-page__host-row {
+  margin-bottom: 1rem;
+}
+
+.detail-page__summary {
+  font-size: 1.05rem;
+}
+
+.detail-page__divider {
+  border: none;
+  border-top: 1px solid #ebebeb;
+  margin: 1.5rem 0;
+}
+
+.detail-page__section {
+  margin-bottom: 1.75rem;
+}
+
+.detail-page__section h3 {
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem;
+}
+
+.detail-page__amenities {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-page__error {
+  background: #fff0eb;
+  border-radius: 8px;
+  color: #c13515;
+  padding: 1rem;
+}
+
+.detail-page__loading {
+  color: #717171;
+}
+
+@media (min-width: 900px) {
+  .detail-page__layout {
+    grid-template-columns: 1fr 380px;
+  }
+}

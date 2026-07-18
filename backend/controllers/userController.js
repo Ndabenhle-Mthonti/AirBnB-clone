@@ -125,4 +125,27 @@ const loginUser = async (req, res) => {
   }
 }
 
-module.exports = { signupUser, loginUser }
+/**
+ * GET /api/user/me
+ * Validates the JWT and returns the current user (used on page refresh).
+ */
+const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select('_id email')
+
+    if (!user) {
+      return res.status(401).json({ error: 'User not found. Please log in again.' })
+    }
+
+    res.status(200).json({
+      user: {
+        id: user._id,
+        email: user.email,
+      },
+    })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+}
+
+module.exports = { signupUser, loginUser, getMe }

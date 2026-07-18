@@ -1,14 +1,21 @@
-const express = require('express')
+/**
+ * routes/user.js
+ * --------------
+ * User authentication routes.
+ *
+ *  POST /api/user/signup  → create account
+ *  POST /api/user/login   → log in, receive JWT
+ *  GET  /api/user/me      → validate JWT (protected)
+ */
 
-//controller functions 
-const { signupUser, loginUser } = require ('../controllers/userController.js')
+const express = require('express')
+const { signupUser, loginUser, getMe } = require('../controllers/userController')
+const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
 
-//login route
 router.post('/login', loginUser)
-
-//signup route
 router.post('/signup', signupUser)
+router.get('/me', requireAuth, getMe)
 
 module.exports = router

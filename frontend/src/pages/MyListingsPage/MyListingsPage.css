@@ -1,0 +1,104 @@
+.my-listings__header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.my-listings__header h1 {
+  margin: 0;
+}
+
+.my-listings__create {
+  background: #ff385c;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.65rem 1rem;
+  text-decoration: none;
+}
+
+.my-listings__back {
+  color: #484848;
+  display: inline-block;
+  margin-bottom: 1.25rem;
+  text-decoration: none;
+}
+
+.my-listings__grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.my-listings__card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.my-listings__card img {
+  height: 160px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.my-listings__body {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.my-listings__body h2 {
+  font-size: 1.1rem;
+  margin: 0 0 0.35rem;
+}
+
+.my-listings__location {
+  color: #717171;
+  margin: 0 0 0.35rem;
+}
+
+.my-listings__price {
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.my-listings__actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.my-listings__actions a {
+  color: #ff385c;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.my-listings__actions button {
+  background: none;
+  border: none;
+  color: #c13515;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+}
+
+.my-listings__error {
+  background: #fff0eb;
+  border-radius: 8px;
+  color: #c13515;
+  padding: 0.75rem;
+}
+
+.my-listings__success {
+  background: #e8f5e9;
+  border-radius: 8px;
+  color: #008a05;
+  padding: 0.75rem;
+}
+
+.my-listings__status {
+  color: #717171;
+}

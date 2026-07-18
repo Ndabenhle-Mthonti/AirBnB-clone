@@ -17,6 +17,8 @@ const dns = require('dns')
 const mongoose = require('mongoose')
 const airbnbRoutes = require('./routes/airbnbs')
 const userRoutes = require('./routes/user')
+const reservationRoutes = require('./routes/reservations')
+const { notFound, errorHandler } = require('./middleware/errorHandler')
 
 // Port number for Postman/local testing (default 4000 if not set in .env)
 const PORT = process.env.PORT || 4000
@@ -68,6 +70,7 @@ app.use((req, res, next) => {
  */
 app.use('/api/airbnbs', airbnbRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/reservations', reservationRoutes)
 
 app.get('/api/health', (_req, res) => {
   const states = {
@@ -93,6 +96,15 @@ if (!MONGO_URI) {
   console.error('Missing MONGO_URI in backend/.env')
   process.exit(1)
 }
+
+if (!process.env.SECRET) {
+  console.error('Missing SECRET in backend/.env — JWT auth will fail')
+  process.exit(1)
+}
+
+/** Unknown routes and global errors — consistent JSON responses for Postman */
+app.use(notFound)
+app.use(errorHandler)
 
 mongoose
   .connect(MONGO_URI)

@@ -1,14 +1,20 @@
 /**
  * AccommodationDetails.js
  * -----------------------
- * A small reusable card that displays ONE accommodation.
- * Home.js passes each item as the "accommodation" prop.
+ * Listing card for the accommodations grid (rubric: location cards).
+ *
+ * Clicking a card navigates to /accommodations/:id (details page).
+ * Shows cover photo, title, city, price, and short description.
  */
+
+import { Link } from 'react-router-dom'
 
 const AccommodationDetails = ({ accommodation }) => {
   return (
-    <div className="accommodation-details">
-      {/* coverPhoto comes from the form / Postman and is stored in MongoDB */}
+    <Link
+      to={`/accommodations/${accommodation._id}`}
+      className="accommodation-details accommodation-details--link"
+    >
       {accommodation.coverPhoto && (
         <img
           src={accommodation.coverPhoto}
@@ -17,24 +23,32 @@ const AccommodationDetails = ({ accommodation }) => {
         />
       )}
 
-      {/* Main title from the database */}
       <h4>{accommodation.title}</h4>
 
-      {/* Show city and country if location exists */}
       {accommodation.location && (
         <p className="location">
           {accommodation.location.city}, {accommodation.location.country}
         </p>
       )}
 
-      {/* Price per night */}
       <p className="price">
-        {accommodation.currency || 'USD'} {accommodation.pricePerNight} / night
+        <strong>
+          {accommodation.currency || 'ZAR'} {accommodation.pricePerNight}
+        </strong>{' '}
+        / night
       </p>
 
-      {/* Short description */}
+      {accommodation.rating > 0 && (
+        <p className="rating">
+          ★ {accommodation.rating.toFixed(2)}
+          {accommodation.reviewCount > 0 && (
+            <span className="review-count"> ({accommodation.reviewCount} reviews)</span>
+          )}
+        </p>
+      )}
+
       <p className="description">{accommodation.description}</p>
-    </div>
+    </Link>
   )
 }
 

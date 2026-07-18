@@ -4,8 +4,8 @@
  * Location dropdown for the search bar.
  *
  * Beginner notes:
- *  - "View all locations" shows every accommodation in the database.
- *  - Cities below come from GET /api/airbnbs/cities (only cities with listings).
+ *  - "View all accommodations" shows every listing (GET /api/airbnbs).
+ *  - Cities come from GET /api/airbnbs/cities (only cities with listings).
  *  - Clicking a city opens /accommodations?city=... with filtered results.
  */
 
@@ -80,7 +80,7 @@ const DestinationPanel = ({ query, onQueryChange, onClose, onViewAllLocations })
           type="button"
           onClick={handleViewAllLocations}
         >
-          View all locations
+          View all accommodations
         </button>
 
         {isLoading && (

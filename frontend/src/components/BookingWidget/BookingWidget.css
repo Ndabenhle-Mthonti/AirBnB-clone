@@ -1,0 +1,140 @@
+/**
+ * BookingWidget.css
+ * Sticky reservation card — matches Airbnb's pink accent and rounded card style.
+ */
+
+.booking-widget {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  padding: 1.5rem;
+  position: sticky;
+  top: 6rem;
+}
+
+.booking-widget__price {
+  margin-bottom: 1rem;
+}
+
+.booking-widget__price strong {
+  font-size: 1.35rem;
+}
+
+.booking-widget__price span {
+  color: #717171;
+}
+
+.booking-widget__fields {
+  border: 1px solid #b0b0b0;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.booking-widget__field {
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  padding: 0.65rem 0.75rem;
+}
+
+.booking-widget__field:first-child {
+  border-right: 1px solid #ddd;
+}
+
+.booking-widget__field--full {
+  border-bottom: none;
+  grid-column: 1 / -1;
+}
+
+.booking-widget__field span {
+  color: #717171;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.booking-widget__field input[type='date'],
+.booking-widget__field input[type='number'] {
+  border: none;
+  font-size: 0.95rem;
+  outline: none;
+  padding: 0.25rem 0;
+}
+
+.booking-widget__guest-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.35rem;
+}
+
+.booking-widget__guest-row input {
+  max-width: 4rem;
+  text-align: center;
+}
+
+.booking-widget__reserve {
+  background: linear-gradient(to right, #e61e4d, #e31c5f, #d70466);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.9rem;
+  width: 100%;
+}
+
+.booking-widget__reserve:disabled {
+  opacity: 0.7;
+}
+
+.booking-widget__breakdown {
+  border-top: 1px solid #ebebeb;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.booking-widget__line {
+  color: #484848;
+  display: flex;
+  font-size: 0.95rem;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.booking-widget__line--total {
+  border-top: 1px solid #ebebeb;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.booking-widget__error {
+  background: #fff0eb;
+  border-radius: 8px;
+  color: #c13515;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  padding: 0.65rem;
+}
+
+.booking-widget__success {
+  background: #e8f5e9;
+  border-radius: 8px;
+  color: #008a05;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  padding: 0.65rem;
+}
+
+.booking-widget__note {
+  color: #717171;
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0;
+  text-align: center;
+}

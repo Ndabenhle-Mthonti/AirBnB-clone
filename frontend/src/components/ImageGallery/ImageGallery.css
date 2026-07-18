@@ -1,0 +1,83 @@
+/**
+ * ImageGallery.css
+ * Airbnb-style 5-tile photo grid (1 large left, 4 smaller on the right).
+ */
+
+.image-gallery {
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 200px 200px;
+  overflow: hidden;
+}
+
+.image-gallery__tile {
+  overflow: hidden;
+  position: relative;
+}
+
+.image-gallery__tile img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.image-gallery__tile--0 {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  min-height: 408px;
+}
+
+.image-gallery__tile--1 {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.image-gallery__tile--2 {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.image-gallery__tile--3,
+.image-gallery__tile--4 {
+  display: none;
+}
+
+.image-gallery__tile--placeholder {
+  background: #ebebeb;
+}
+
+@media (min-width: 900px) {
+  .image-gallery {
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 200px 200px;
+  }
+
+  .image-gallery__tile--0 {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .image-gallery__tile--1 {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .image-gallery__tile--2 {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .image-gallery__tile--3 {
+    display: block;
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .image-gallery__tile--4 {
+    display: block;
+    grid-column: 3;
+    grid-row: 2;
+  }
+}

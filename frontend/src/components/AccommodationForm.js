@@ -138,7 +138,7 @@ function AccommodationForm() {
         accommodationDispatch({ type: 'ADD_ACCOMMODATION', payload: data })
 
         // Optional: go back to Home after 2 seconds so user sees their new card
-        setTimeout(() => navigate('/'), 2000)
+        setTimeout(() => navigate('/admin/listings'), 2000)
       } else {
         dispatch({
           type: 'SUBMIT_ERROR',

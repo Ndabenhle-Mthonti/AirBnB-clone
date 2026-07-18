@@ -58,6 +58,10 @@ const accommodationSchema = new Schema(
     rating: { type: Number, default: 0 },
     reviewCount: { type: Number, default: 0 },
 
+    /** Original Airbnb listing reference (for presentation / demo links) */
+    airbnbListingId: { type: String },
+    airbnbUrl: { type: String },
+
     /**
      * host stores a MongoDB ObjectId that points to a User document.
      * For Postman testing, send a valid 24-character hex id, for example:

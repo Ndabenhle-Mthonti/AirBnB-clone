@@ -1,0 +1,181 @@
+{
+  "info": {
+    "name": "AirBnB Clone - Full API",
+    "description": "Complete API collection matching frontend routes and rubric requirements.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "token", "value": "" },
+    { "key": "listingId", "value": "" },
+    { "key": "reservationId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Sign up",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"host@example.com\",\n  \"password\": \"Password1!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/user/signup"
+          }
+        },
+        {
+          "name": "Log in",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"host@example.com\",\n  \"password\": \"Password1!\"\n}"
+            },
+            "url": "{{baseUrl}}/api/user/login",
+            "description": "Copy the token from the response into the collection variable {{token}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Browse (Guest)",
+      "item": [
+        {
+          "name": "Get ALL accommodations",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/airbnbs",
+            "description": "View all accommodations — same as /accommodations"
+          }
+        },
+        {
+          "name": "Get accommodations by city",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/airbnbs?city=Cape Town",
+            "description": "Filter by city — same as /accommodations?city=Cape Town"
+          }
+        },
+        {
+          "name": "Get all cities",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/airbnbs/cities"
+          }
+        },
+        {
+          "name": "Get single accommodation",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/airbnbs/{{listingId}}",
+            "description": "Details page — same as /accommodations/:id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Host Listings (Auth)",
+      "item": [
+        {
+          "name": "Get my listings",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/airbnbs/mine"
+          }
+        },
+        {
+          "name": "Create listing",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Apartment\",\n  \"description\": \"A lovely test stay.\",\n  \"pricePerNight\": 800,\n  \"currency\": \"ZAR\",\n  \"maxGuests\": 4,\n  \"bedrooms\": 2,\n  \"bathrooms\": 1,\n  \"beds\": 2,\n  \"location\": { \"city\": \"Cape Town\", \"country\": \"South Africa\" },\n  \"coverPhoto\": \"https://images.unsplash.com/photo-1502672260266-1c1ef2cd9361?w=800\"\n}"
+            },
+            "url": "{{baseUrl}}/api/airbnbs"
+          }
+        },
+        {
+          "name": "Update listing",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pricePerNight\": 900\n}"
+            },
+            "url": "{{baseUrl}}/api/airbnbs/{{listingId}}"
+          }
+        },
+        {
+          "name": "Delete listing",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/airbnbs/{{listingId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservations (Auth)",
+      "item": [
+        {
+          "name": "Get my reservations",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/reservations"
+          }
+        },
+        {
+          "name": "Create booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accommodationId\": \"{{listingId}}\",\n  \"checkIn\": \"2026-09-01\",\n  \"checkOut\": \"2026-09-05\",\n  \"guests\": { \"adults\": 2, \"children\": 0, \"infants\": 0 }\n}"
+            },
+            "url": "{{baseUrl}}/api/reservations",
+            "description": "Same as Reserve on the details page booking widget"
+          }
+        },
+        {
+          "name": "Cancel reservation",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/api/reservations/{{reservationId}}"
+          }
+        }
+      ]
+    }
+  ]
+}

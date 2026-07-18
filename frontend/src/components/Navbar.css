@@ -108,7 +108,8 @@
   z-index: 200;
 }
 
-.airbnb-profile-email {
+.airbnb-profile-email,
+.airbnb-profile-greeting {
   border-bottom: 1px solid #ebebeb;
   color: #717171;
   font-size: 13px;

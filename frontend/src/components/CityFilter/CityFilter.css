@@ -1,0 +1,22 @@
+.city-filter {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.city-filter__label {
+  color: #484848;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.city-filter__select {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  min-width: 220px;
+  padding: 0.65rem 0.85rem;
+}

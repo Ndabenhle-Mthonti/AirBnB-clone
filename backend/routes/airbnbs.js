@@ -19,6 +19,7 @@ const express = require('express')
 const {
   getAccommodations,
   getCities,
+  getMyAccommodations,
   getAccommodation,
   createAccommodation,
   deleteAccommodation,
@@ -28,8 +29,9 @@ const requireAuth = require('../middleware/requireAuth')
 
 const router = express.Router()
 
-// Public browsing routes
+// Public browsing routes (specific paths before /:id)
 router.get('/cities', getCities)
+router.get('/mine', requireAuth, getMyAccommodations)
 router.get('/', getAccommodations)
 router.get('/:id', getAccommodation)
 

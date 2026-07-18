@@ -27,7 +27,7 @@ const Navbar = () => {
   const profileMenuRef = useRef(null)
 
   const { dispatch } = useAccommodationContext()
-  const { user, dispatch: authDispatch } = useAuthContext()
+  const { user, logoutUser } = useAuthContext()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -74,9 +74,7 @@ const Navbar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    authDispatch({ type: 'LOGOUT' })
+    logoutUser()
     closeProfileMenu()
   }
 
@@ -155,7 +153,28 @@ const Navbar = () => {
               <div className="airbnb-profile-dropdown">
                 {user ? (
                   <>
-                    <p className="airbnb-profile-email">{user.email}</p>
+                    <p className="airbnb-profile-greeting">Hello, {user.email}</p>
+                    <Link
+                      to="/admin"
+                      className="airbnb-profile-dropdown-item"
+                      onClick={closeProfileMenu}
+                    >
+                      Host dashboard
+                    </Link>
+                    <Link
+                      to="/admin/listings"
+                      className="airbnb-profile-dropdown-item"
+                      onClick={closeProfileMenu}
+                    >
+                      My listings
+                    </Link>
+                    <Link
+                      to="/reservations"
+                      className="airbnb-profile-dropdown-item"
+                      onClick={closeProfileMenu}
+                    >
+                      My reservations
+                    </Link>
                     <button
                       className="airbnb-profile-dropdown-item"
                       type="button"

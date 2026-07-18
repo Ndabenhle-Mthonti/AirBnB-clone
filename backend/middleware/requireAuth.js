@@ -13,25 +13,32 @@ const User = require('../models/userModel')
 const requireAuth = async (req, res, next) => {
   const { authorization } = req.headers
 
-  if (!authorization) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     return res.status(401).json({ error: 'Authorization token required' })
   }
 
   const token = authorization.split(' ')[1]
 
+  if (!token) {
+    return res.status(401).json({ error: 'Authorization token required' })
+  }
+
   try {
     const { _id } = jwt.verify(token, process.env.SECRET)
-    const user = await User.findOne({ _id }).select('_id')
+    const user = await User.findById(_id).select('_id email')
 
     if (!user) {
-      return res.status(401).json({ error: 'Request is not authorized' })
+      return res.status(401).json({ error: 'User not found. Please log in again.' })
     }
 
     req.user = user
     next()
   } catch (error) {
-    console.log(error)
-    res.status(401).json({ error: 'Request is not authorized' })
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ error: 'Session expired. Please log in again.' })
+    }
+
+    return res.status(401).json({ error: 'Request is not authorized' })
   }
 }
 

@@ -3,13 +3,16 @@
  * ---------------------
  * Shows all accommodations or results filtered by city from the URL.
  *
- .
+ * Beginner notes:
+ *  - No ?city=  → GET /api/airbnbs (all listings — same as Postman)
+ *  - ?city=Cape Town → GET /api/airbnbs?city=Cape Town (filtered)
  */
 
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import AccommodationDetails from '../../components/AccommodationDetails'
-import { API_URL } from '../../config/api'
+import CityFilter from '../../components/CityFilter/CityFilter'
+import { getAccommodationsUrl } from '../../config/api'
 import './AccommodationsPage.css'
 
 const AccommodationsPage = () => {
@@ -25,11 +28,7 @@ const AccommodationsPage = () => {
       setError('')
 
       try {
-        const url = city
-          ? `${API_URL}?city=${encodeURIComponent(city)}`
-          : API_URL
-
-        const response = await fetch(url)
+        const response = await fetch(getAccommodationsUrl(city))
         const json = await response.json()
 
         if (response.ok) {
@@ -45,11 +44,13 @@ const AccommodationsPage = () => {
     fetchAccommodations()
   }, [city])
 
-  const heading = city ? `Accommodations in ${city}` : 'All locations'
+  const heading = city ? `Accommodations in ${city}` : 'All accommodations'
 
   return (
     <div className="accommodations-page">
       <h2 className="accommodations-page__heading">{heading}</h2>
+
+      <CityFilter />
 
       {accommodations === null && !error && (
         <p className="accommodations-page__status">Loading accommodations...</p>
